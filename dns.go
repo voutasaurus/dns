@@ -1,32 +1,33 @@
 package main
 
 import (
-	"log"
+	"flag"
+	"fmt"
 	"net"
 	"os"
 )
 
 func main() {
-	log.SetFlags(0)
-	if len(os.Args) < 2 {
-		log.Fatal("Require hostname")
+	flag.Parse()
+	host := flag.Arg(0)
+	if host == "" {
+		fmt.Fprintln(os.Stderr, "usage: dns hostname")
+		return
 	}
-	log.Println("IP addr:", lookup(os.Args[1]))
-	log.Println("CName:", cname(os.Args[1]))
-}
 
-func lookup(host string) []string {
-	addr, err := net.LookupHost(host)
+	addrs, err := net.LookupHost(host)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintln(os.Stderr, err)
+		return
 	}
-	return addr
-}
+	fmt.Fprint(os.Stderr, "IP addrs: ")
+	fmt.Println(addrs)
 
-func cname(host string) string {
-	cn, err := net.LookupCNAME(host)
+	cname, err := net.LookupCNAME(host)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintln(os.Stderr, err)
+		return
 	}
-	return cn
+	fmt.Fprint(os.Stderr, "CNAME: ")
+	fmt.Println(cname)
 }
