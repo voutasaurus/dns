@@ -1,7 +1,9 @@
 dns [![Build Status](https://travis-ci.org/voutasaurus/dns.svg?branch=master)](https://travis-ci.org/voutasaurus/dns)
 =======
 
-dns is a tool to perform dns lookup
+dns is a tool to perform dns lookup.
+
+You should probably just `alias dns = dig +short` instead. I still use this to find out what Go's dns is going to give me in more complicated programs because it works slightly differently to dig.
 
 Usage
 =====
